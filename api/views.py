@@ -11,7 +11,6 @@ import django_filters.rest_framework
 
 # Create your views here.
 
-
 class RegistrationList(generics.ListCreateAPIView):
     """
     get:
