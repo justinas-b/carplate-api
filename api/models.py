@@ -6,7 +6,11 @@ from Models.CICharField import CICharField
 
 
 class Registration(models.Model):
+    """
+    Car plate registration model
+    """
 
+    # RegEx for validating car plate pattern
     car_plate_regex = r'^([a-zA-Z]{2,3}\d{3}|' \
                       r'[a-zA-Z]{2}\d{2}|' \
                       r'\d{3}[a-zA-Z]{2}|' \

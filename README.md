@@ -46,6 +46,7 @@ https://www.regitra.lt/lt/paslaugos-ir-veikla/numerio-zenklai/numerio-zenklu-tip
 
 ## API
 
+* `http://127.0.0.1:8000/docs/#` - API documentation
 * `http://127.0.0.1:8000/api` - retrieve all entries (Read)
 * `http://127.0.0.1:8000/api?&owner=John+Doe` - retrieve all entries filtered by owner (Read)
 * `http://127.0.0.1:8000/api?plate=AB123` - retrieve all entries filtered by plate (Read)

@@ -16,5 +16,3 @@ class CaseInsensitiveFieldMixin:
     def get_lookup(self, lookup_name):
         converted = self.LOOKUP_CONVERSIONS.get(lookup_name, lookup_name)
         return super().get_lookup(converted)
-
-
