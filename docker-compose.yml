@@ -1,0 +1,43 @@
+version: '3'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: carplate:alpine
+    container_name: api
+    ports:
+      - "8000:8000"
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    depends_on:
+      - rabbit
+      - db
+      - migration
+  rabbit:
+    image: rabbitmq:alpine
+    container_name: rabbit
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    ports:
+      - "5672:5672"
+  db:
+    image: postgres:alpine
+    container_name: db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+  migration:
+      image: carplate:alpine
+      container_name: migration
+      command: python manage.py migrate --noinput
+      volumes:
+        - .:/code
+      depends_on:
+        - db
+
+volumes:
+  postgres_data:
