@@ -11,6 +11,7 @@ import django_filters.rest_framework
 
 # Create your views here.
 
+
 class RegistrationList(generics.ListCreateAPIView):
     """
     get:
@@ -84,4 +85,5 @@ def api_root(request, format=None):
         'registrations': reverse('registration-list', request=request, format=format),
         'registrations-search': reverse('registration-detail-search', request=request, format=format),
         'api-documentation': '',  # TODO: Add link to documentation
+        'admin': '',  # TODO: Add link to documentation
     })

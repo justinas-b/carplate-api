@@ -1,8 +1,10 @@
 from django.db import models
 from django.core.validators import RegexValidator
 from Models.CICharField import CICharField
+from django.core.files.storage import FileSystemStorage
 
 # Create your models here.
+fs = FileSystemStorage(location='/media/photos')
 
 
 class Registration(models.Model):
@@ -25,7 +27,7 @@ class Registration(models.Model):
     plate = CICharField(max_length=6, blank=False, unique=True, validators=[RegexValidator(regex=car_plate_regex)])
     owner = models.CharField(max_length=200, blank=False, unique=False, validators=[RegexValidator(regex=r'^\w+$')])
     car_model = models.CharField(max_length=200, blank=False, unique=False, validators=[RegexValidator(regex=r'^\w+$')])
-    # TODO: Add photo field
+    image = models.ImageField(storage=fs, blank=True, unique=False)
 
     class Meta:
         ordering = ('created',)

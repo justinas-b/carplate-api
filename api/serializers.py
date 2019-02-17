@@ -8,4 +8,4 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Registration
-        fields = ('id', 'created', 'plate', 'owner', 'car_model', )
+        fields = ('id', 'created', 'plate', 'owner', 'car_model', 'image',)
