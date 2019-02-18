@@ -5,6 +5,9 @@ from django.core.files import File
 from icrawler.builtin import GoogleImageCrawler
 import os
 import glob
+import logging
+
+logger = logging.getLogger(__name__)  # Get an instance of a logger
 
 
 @shared_task
@@ -15,20 +18,18 @@ def retrieve_image_task(plate):
     :return: None
     """
 
-    print(f"Task has been called for {plate}")
+    logger.info(f"Task has been called for {plate}")
     instance = Registration.objects.get(plate=plate)
     instance.retrieve_image = False  # Mark instance as no update required
 
     # Check if image is already present in cache
     cached_image = glob.glob(f"images/{instance.car_model.replace(' ', '_')}.*")
-    print(f"images/{instance.car_model.replace(' ', '_')}.*")
-    print(cached_image)
     if len(cached_image):
-        print("Image already exists in cache")
+        logger.info("Image already exists in cache")
         instance.image = cached_image.pop()
         instance.save()
     else:
-        print(f"Searching internet for {instance.car_model} car model")
+        logger.info(f"Searching internet for {instance.car_model} car model")
         with tempfile.TemporaryDirectory() as tempdir:
             google_crawler = GoogleImageCrawler(
                 feeder_threads=1,
@@ -47,7 +48,7 @@ def retrieve_image_task(plate):
             temp_files = os.listdir(tempdir)
 
             if len(temp_files):
-                print("Image successfully downloaded from internet")
+                logger.info("Image successfully downloaded from internet")
                 temp_file_name = temp_files.pop()
                 image_path = os.path.join(tempdir, temp_file_name)
 
@@ -55,8 +56,8 @@ def retrieve_image_task(plate):
                     django_file = File(image)
                     instance.image.save(name=f"{instance.car_model}.jpg", content=django_file, save=True)
             else:
-                print("image not found")
+                logger.info("Image not found, defaulting to 404")
                 instance.image = "images/404.jpg"
                 instance.save()
 
-    print("Updating image completed")
+    logger.info("Updating image completed")
