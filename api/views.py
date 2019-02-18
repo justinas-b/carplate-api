@@ -1,13 +1,14 @@
 # api/views.py
 
+import django_filters.rest_framework
 from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from rest_framework import filters
 from .models import Registration
 from .serializers import RegistrationSerializer
-from rest_framework import filters
-import django_filters.rest_framework
+
 
 # Create your views here.
 
@@ -23,6 +24,11 @@ class RegistrationList(generics.ListCreateAPIView):
     """
     queryset = Registration.objects.all()
     serializer_class = RegistrationSerializer
+
+    def post(self, request, *args, **kwargs):
+        # retrieve_image.delay(plate=request.data["plate"])
+        # debug_task.delay()
+        return super().post(request, *args, **kwargs)
 
 
 class RegistrationDetail(generics.RetrieveUpdateDestroyAPIView):
