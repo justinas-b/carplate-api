@@ -7,8 +7,8 @@
 * [X] It does not require any authentication or authorization.
 * [X] The user should be able to do CRUD operations on car numbers stored in database.
 * [X] The API must be done using Django rest framework.
-* [ ] Asynchronous car model image retrieval needs to be implemented using Celery Framework.
-* [ ] Django and Celery should communicate through RabbitMQ broker.
+* [X] Asynchronous car model image retrieval needs to be implemented using Celery Framework.
+* [X] Django and Celery should communicate through RabbitMQ broker.
 * [X] During development use version control (git) for your project and publish it to any public version control vendors – github, bitbucket, gitlab or any other you prefer.
 * [X] Put a small README.md file which shows how to launch the project in local environment.
 * [X] You can pick any database that Django supports.
@@ -16,9 +16,9 @@
 ## Optionally:
 
 * [ ] Provide any tests for your code
-* [ ] Create a Django admin view to access this data
+* [X] Create a Django admin view to access this data
 * [X] Think about input data validations
-* [ ] Database and rabbitMQ containers provided through docker compose file to easily test this portable solution.
+* [X] Database and rabbitMQ containers provided through docker compose file to easily test this portable solution.
 * [X] Minimalistic design (render the forms as simply as possible)
 
 ## Valstybinių numerių formatai:
@@ -53,3 +53,11 @@ https://www.regitra.lt/lt/paslaugos-ir-veikla/numerio-zenklai/numerio-zenklu-tip
 * `http://127.0.0.1:8000/api?search=123` -  retrieve all entries where search phrase is mentioned (Read)
 * `http://127.0.0.1:8000/api/1/` - retrieve entry by it's ID (Read, Update, Delete)
 * `http://127.0.0.1:8000/api/plate/ABC123/` - retrieve entry by plate (Read, Update, Delete)
+
+## Services
+
+* `http://localhost:5555` - Celery UI (Flower)
+* `http://localhost:5432` - Postgres database
+* `http://localhost:8000` - Django API
+* `http://localhost:5672` - RabbitMQ interface
+* `http://localhost:15672` - RabbitMQ management interface
