@@ -60,5 +60,3 @@ def retrieve_image_task(plate):
                 instance.save()
 
     print("Updating image completed")
-
-
