@@ -24,6 +24,9 @@ class RegistrationList(generics.ListCreateAPIView):
 
     queryset = Registration.objects.all()
     serializer_class = RegistrationSerializer
+    filter_backends = (filters.SearchFilter, DjangoFilterBackend)
+    search_fields = ('plate',)
+    filter_fields = ('plate', 'owner')
 
 
 class RegistrationDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -42,26 +45,9 @@ class RegistrationDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = RegistrationSerializer
 
 
-class RegistrationDetailSearch(generics.ListCreateAPIView):
-    """View for Registration Details.
-
-    get:
-        List existing car plate registrations. Supports search and filtering.
-
-    post:
-        Create new car plate registration.
-    """
-
-    queryset = Registration.objects.all()
-    serializer_class = RegistrationSerializer
-    filter_backends = (filters.SearchFilter, DjangoFilterBackend)
-    search_fields = ('plate',)
-    filter_fields = ('plate', 'owner')
-
-
 class RegistrationDetailFind(generics.RetrieveUpdateDestroyAPIView):
 
-    """View for Registration Details.
+    """View for Registration Details where plate is passed as argument in URL.
 
     get:
         Retrieve car plate registration details
@@ -89,5 +75,5 @@ def api_root(request, format=None):
     """List available API endpoints."""
     return Response({
         'registrations': reverse('registration-list', request=request, format=format),
-        'registrations-search': reverse('registration-detail-search', request=request, format=format),
+        # 'registrations-search': reverse('registration-detail-search', request=request, format=format),
     })
