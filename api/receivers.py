@@ -24,4 +24,4 @@ def registration_post_save_receiver(sender, instance, **kwargs):
     logger.debug(f"Instance: {instance}")
     if instance.retrieve_image:
         logger.info(f"Registering new task to retrieve car image for {instance.plate} car plate")
-        retrieve_image_task.delay(plate=instance.plate)  # TODO: check delay() fingerprint
+        retrieve_image_task.delay(plate=instance.plate)

@@ -25,7 +25,7 @@ def get_image_from_cache(car_model: str) -> str:
 
     logger.debug("Checking image cache for %s", car_model)
     files = glob.glob(f"images/{car_model.replace(' ', '_')}.*")
-    if len(files):
+    if files:
         image = files.pop()
         logger.debug("Image found in cache: %s", image)
         return image
@@ -45,13 +45,14 @@ def download_image(car_model: str) -> str:
         str: Path to downloaded image. If image is not found, function returns None
     """
     logger.debug("Downloading %s image from internet", car_model)
-    tempdir = tempfile.TemporaryDirectory()
+    # tempdir = tempfile.TemporaryDirectory().name
+    tempdir = tempfile.mkdtemp()
 
     google_crawler = GoogleImageCrawler(
         feeder_threads=1,
         parser_threads=1,
         downloader_threads=1,
-        storage={'root_dir': tempdir.name})
+        storage={'root_dir': tempdir})
 
     filters = dict(
         size='large',
@@ -59,13 +60,12 @@ def download_image(car_model: str) -> str:
         license='commercial,modify',
         type='photo'
     )
-
     google_crawler.crawl(keyword=car_model, filters=filters, max_num=1, file_idx_offset=0)
-    temp_files = os.listdir(tempdir.name)
+    temp_files = os.listdir(tempdir)
 
-    if len(temp_files):
+    if temp_files:
         image_name = temp_files.pop()
-        image_path = os.path.join(tempdir.name, image_name)
+        image_path = os.path.join(tempdir, image_name)
         logger.debug("Image successfully downloaded from internet (%s)", image_path)
 
     else:
