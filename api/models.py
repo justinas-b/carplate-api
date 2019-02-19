@@ -1,19 +1,30 @@
-from django.db import models
-from django.core.validators import RegexValidator
-from Models.CICharField import CICharField
 import logging
+
 from django.contrib import admin
+from django.core.validators import RegexValidator
+from django.db import models
+
+from Models.CICharField import CICharField
 
 logger = logging.getLogger(__name__)  # Get an instance of a logger
 
 
 # Create your models here.
 class Registration(models.Model):
+
     """
     Car plate registration model
+
+    Args:
+        plate: Plate number to retrieve image for
+        owner: Car owner
+        car_model: Car model
+    Return:
+        None
     """
 
     # RegEx for validating car plate pattern
+    car_and_owner_regex = r'^\w+\s+(\w+\s*)+$'
     car_plate_regex = r'^([a-zA-Z]{2,3}\d{3}|' \
                       r'[a-zA-Z]{2}\d{2}|' \
                       r'\d{3}[a-zA-Z]{2}|' \
@@ -28,10 +39,9 @@ class Registration(models.Model):
     plate = CICharField(max_length=6, blank=False, unique=True, validators=[RegexValidator(regex=car_plate_regex)],
                         help_text="Car plate number (as per Lithuanian standards)")
     owner = models.CharField(max_length=200, blank=False, help_text="Owner's full name (Name and Surname)",
-                             unique=False, validators=[RegexValidator(regex=r'^(\w+\s*)+$')])
+                             unique=False, validators=[RegexValidator(regex=car_and_owner_regex)])
     car_model = models.CharField(max_length=200, blank=False, help_text="Car make and model",
-                                 unique=False, validators=[RegexValidator(regex=r'^(\w+\s*)+$')])
-    # image = models.ImageField(storage=fs, blank=True, unique=False)
+                                 unique=False, validators=[RegexValidator(regex=car_and_owner_regex)])
     image = models.ImageField(upload_to='images', blank=True, unique=False,
                               help_text="Car model's image", editable=False)
     retrieve_image = models.BooleanField(default=True, help_text="Specifies if car image should be retrieved",
@@ -47,7 +57,7 @@ class Registration(models.Model):
     # - capitalize plate number
     # - set title case for owner field
     # - capitalize car model
-    # - and verify if car image shouuld be retrieved
+    # - and verify if car image should be retrieved
     def save(self, *args, **kwargs):
         # Check if car model has changed and if so, mark object as Update Required
         if self.pk is not None and self.retrieve_image is False:
@@ -56,9 +66,9 @@ class Registration(models.Model):
                 logger.info(f"Car model changed from '{original.car_model}' to '{self.car_model}'")
                 self.retrieve_image = True
 
-        self.plate = self.plate.upper()
-        self.car_model = self.car_model.upper()
-        self.owner = self.owner.title()
+        self.plate = self.plate.upper()  # Capitalize car plate
+        self.car_model = self.car_model.upper()  # Capitalize car model
+        self.owner = self.owner.title()  # Apply TitleCase for owner's name
         super(Registration, self).save(*args, **kwargs)
 
 

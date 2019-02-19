@@ -1,14 +1,13 @@
 # api/views.py
 
-import django_filters.rest_framework
-from rest_framework import generics
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
-from rest_framework import filters
+
 from .models import Registration
 from .serializers import RegistrationSerializer
-
 
 # Create your views here.
 
@@ -22,13 +21,9 @@ class RegistrationList(generics.ListCreateAPIView):
         Create new car plate registration.
 
     """
+
     queryset = Registration.objects.all()
     serializer_class = RegistrationSerializer
-
-    def post(self, request, *args, **kwargs):
-        # retrieve_image.delay(plate=request.data["plate"])
-        # debug_task.delay()
-        return super().post(request, *args, **kwargs)
 
 
 class RegistrationDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -42,27 +37,32 @@ class RegistrationDetail(generics.RetrieveUpdateDestroyAPIView):
     delete:
         Delete existing car plate registration details
     """
+
     queryset = Registration.objects.all()
     serializer_class = RegistrationSerializer
 
 
 class RegistrationDetailSearch(generics.ListCreateAPIView):
-    """
+    """View for Registration Details.
+
     get:
         List existing car plate registrations. Supports search and filtering.
 
     post:
         Create new car plate registration.
     """
+
     queryset = Registration.objects.all()
     serializer_class = RegistrationSerializer
-    filter_backends = (filters.SearchFilter, django_filters.rest_framework.DjangoFilterBackend)
+    filter_backends = (filters.SearchFilter, DjangoFilterBackend)
     search_fields = ('plate',)
     filter_fields = ('plate', 'owner')
 
 
 class RegistrationDetailFind(generics.RetrieveUpdateDestroyAPIView):
-    """
+
+    """View for Registration Details.
+
     get:
         Retrieve car plate registration details
 
@@ -72,6 +72,7 @@ class RegistrationDetailFind(generics.RetrieveUpdateDestroyAPIView):
     delete:
         Delete existing car plate registration details
     """
+
     queryset = Registration.objects.all()
     serializer_class = RegistrationSerializer
     lookup_url_kwarg = 'plate'
@@ -85,11 +86,8 @@ class RegistrationDetailFind(generics.RetrieveUpdateDestroyAPIView):
 
 @api_view(['GET'])
 def api_root(request, format=None):
-    """Lists available API endpoints"""
-
+    """List available API endpoints."""
     return Response({
         'registrations': reverse('registration-list', request=request, format=format),
         'registrations-search': reverse('registration-detail-search', request=request, format=format),
-        'api-documentation': '',  # TODO: Add link to documentation
-        'admin': '',  # TODO: Add link to documentation
     })
