@@ -9,7 +9,7 @@ from api import views
 
 urlpatterns = [
     path('api', views.RegistrationList.as_view(), name='registration-list'),
-    path('api/<int:pk>/', views.RegistrationDetail.as_view(), name='registration-detail'),
+    path('api/<int:pk>', views.RegistrationDetail.as_view(), name='registration-detail'),
     re_path(r'^api/plate/(?P<plate>.*)/$', views.RegistrationDetailFind.as_view(), name='registration-detail-find'),
     re_path(r'^docs/', get_swagger_view(title='Car Plate API documentation'), name='api-documentation'),
     path('', views.api_root),
@@ -18,5 +18,3 @@ urlpatterns = [
 # Add URLs for static images
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-urlpatterns = format_suffix_patterns(urlpatterns)
