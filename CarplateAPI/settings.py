@@ -174,7 +174,7 @@ LOGGING = {
     'loggers': {
         '': {
             'level': 'INFO',
-            'handlers': ['console', 'file'],
+            'handlers': ['file', ],
         },
     },
 }
