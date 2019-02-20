@@ -53,23 +53,25 @@ class Registration(models.Model):
     def __str__(self):
         return self.plate
 
-    # Override save method in order to:
-    # - capitalize plate number
-    # - set title case for owner field
-    # - capitalize car model
-    # - and verify if car image should be retrieved
-    def save(self, *args, **kwargs):
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        """Override save method in order to:
+            - capitalize plate number
+            - set title case for owner field
+            - capitalize car model
+            - and verify if car image should be retrieved
+        """
+
         # Check if car model has changed and if so, mark object as Update Required
         if self.pk is not None and self.retrieve_image is False:
             original = Registration.objects.get(pk=self.pk)  # Compare current
             if original.car_model != self.car_model:  # Compare new and old values of car model
-                logger.info(f"Car model changed from '{original.car_model}' to '{self.car_model}'")
+                logger.info("Car model changed from '%s' to '%s'", original.car_model, self.car_model)
                 self.retrieve_image = True
 
-        self.plate = self.plate.upper()  # Capitalize car plate
-        self.car_model = self.car_model.upper()  # Capitalize car model
-        self.owner = self.owner.title()  # Apply TitleCase for owner's name
-        super(Registration, self).save(*args, **kwargs)
+        self.plate = self.plate.strip().upper()  # Capitalize car plate
+        self.car_model = self.car_model.strip().upper()  # Capitalize car model
+        self.owner = self.owner.strip().title()  # Apply TitleCase for owner's name
+        super(Registration, self).save(force_insert, force_update, using, update_fields)
 
 
 class RegistrationAdmin(admin.ModelAdmin):
