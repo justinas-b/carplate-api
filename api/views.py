@@ -34,11 +34,15 @@ class RegistrationDetail(generics.RetrieveUpdateDestroyAPIView):
     get:
         Retrieve car plate registration details
 
-    update:
+    patch:
         Update existing car plate registration details
 
     delete:
         Delete existing car plate registration details
+
+    put:
+        Create new car plate registration
+
     """
 
     queryset = Registration.objects.all()
@@ -71,9 +75,8 @@ class RegistrationDetailFind(generics.RetrieveUpdateDestroyAPIView):
 
 
 @api_view(['GET'])
-def api_root(request, format=None):
+def api_root(request):
     """List available API endpoints."""
     return Response({
-        'registrations': reverse('registration-list', request=request, format=format),
-        # 'registrations-search': reverse('registration-detail-search', request=request, format=format),
+        'registrations': reverse('registration-list', request=request),
     })

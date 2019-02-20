@@ -1,12 +1,11 @@
 import json
 
 from django.db.utils import IntegrityError
-from django.test import Client
-from django.test import TestCase
+from django.test import Client, TestCase
 from rest_framework import status
 from rest_framework.reverse import reverse
 
-from api.models import Registration
+from .models import Registration
 from .serializers import RegistrationSerializer
 from .tasks import get_image_from_cache, retrieve_image_task
 
@@ -40,8 +39,8 @@ class RegistrationTest(TestCase):
             'owner': 'JohnDoe',
         }
 
+    # Cleanup once tests are completed.
     def tearDown(self):
-        """Cleanup once tests are completed."""
         pass
 
     def test_car_name_is_upper_case(self):

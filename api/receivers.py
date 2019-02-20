@@ -21,7 +21,7 @@ def registration_post_save_receiver(sender, instance, **kwargs):
         None
     """
 
-    logger.debug(f"Instance: {instance}")
+    logger.debug("Instance: %s", instance)
     if instance.retrieve_image:
-        logger.info(f"Registering new task to retrieve car image for {instance.plate} car plate")
+        logger.info("Registering new task to retrieve car image for %s car plate", instance.plate)
         retrieve_image_task.delay(plate=instance.plate)

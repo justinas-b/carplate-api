@@ -28,10 +28,11 @@ def get_image_from_cache(car_model: str) -> str:
     if files:
         image = files.pop()
         logger.debug("Image found in cache: %s", image)
-        return image
     else:
+        image = None
         logger.debug("%s image not present in cache", car_model)
-        return None
+
+    return image
 
 
 def download_image(car_model: str) -> str:
