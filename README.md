@@ -1,6 +1,8 @@
 # carplate-api
 
-**Story:** User can register/store Lithuanian car number plates, their owner names and car model to web application through API and application should asynchronously retrieve Car model image using Celery Framework, store it locally and display later on
+## Story:
+
+User can register/store Lithuanian car number plates, their owner names and car model to web application through API and application should asynchronously retrieve Car model image using Celery Framework, store it locally and display later on
 
 ## Requirements:
 
@@ -15,21 +17,36 @@
  
 ## Optionally:
 
-* [ ] Provide any tests for your code
+* [X] Provide any tests for your code
 * [X] Create a Django admin view to access this data
 * [X] Think about input data validations
 * [X] Database and rabbitMQ containers provided through docker compose file to easily test this portable solution.
 * [X] Minimalistic design (render the forms as simply as possible)
 
-## Valstybinių numerių formatai:
+## API
 
-https://www.regitra.lt/lt/paslaugos-ir-veikla/numerio-zenklai/numerio-zenklu-tipai
+* `http://127.0.0.1:8000/docs/#` - API documentation
+* `http://localhost:8000/admin/` - Admin view
+* `http://127.0.0.1:8000/api` - retrieve all entries (GET), create new entry (POST)
+* `http://127.0.0.1:8000/api?&owner=John+Doe` - retrieve all entries filtered by owner (GET)
+* `http://127.0.0.1:8000/api?plate=AB123` - retrieve all entries filtered by plate (GET)
+* `http://127.0.0.1:8000/api?search=123` -  retrieve all entries where search phrase is mentioned in plate field (GET)
+* `http://127.0.0.1:8000/api/{ID}/` - retrieve/alter entry by it's ID (GET/PUT/PATCH/DELETE)
+* `http://127.0.0.1:8000/api/plate/ABC123/` - retrieve entry by plate (Read, Update, Delete)
 
-* `XXX 000` - automobiliams ženklinti skirtuose numerio ženkluose – trys raidės ir trys skaitmenys
-* `XX 000` - priekaboms ir puspriekabėms ženklinti skirtuose numerio ženkluose – dvi raidės ir trys skaitmenys
-* `000 XX` - motociklams ženklinti skirtuose numerio ženkluose – trys skaitmenys ir dvi raidės
-* `00 XXX` - mopedams (motociklams) ženklinti skirtuose 4-ojo formato numerio ženkluose – du skaitmenys ir trys raidės
-* `XX 00` - galingiesiems keturračiams ženklinti skirtuose 3-ojo formato numerio ženkluose – du skaitmenys ir dvi raidės
+## API Fields
+
+### `plate` field:
+
+Car plate field accepts only values that match RegEx pattern defined by Lithuanina Standard
+(https://www.regitra.lt/lt/paslaugos-ir-veikla/numerio-zenklai/numerio-zenklu-tipai)
+
+Below is the list of acceptable formats:
+* `XXX000` - automobiliams ženklinti skirtuose numerio ženkluose – trys raidės ir trys skaitmenys
+* `XX000` - priekaboms ir puspriekabėms ženklinti skirtuose numerio ženkluose – dvi raidės ir trys skaitmenys
+* `000XX` - motociklams ženklinti skirtuose numerio ženkluose – trys skaitmenys ir dvi raidės
+* `00XXX` - mopedams (motociklams) ženklinti skirtuose 4-ojo formato numerio ženkluose – du skaitmenys ir trys raidės
+* `XX00` - galingiesiems keturračiams ženklinti skirtuose 3-ojo formato numerio ženkluose – du skaitmenys ir dvi raidės
 * `0XXXXX` - automobiliams  – nuo 1 iki 6 simbolių, kurių vienas privalo būti skaičius
 * `0XXXX` - motociklams – nuo 1 iki 5 simbolių, kurių vienas privalo būti skaičius
 * `T00000` - taksi. Šio tipo numerio ženklai yra skirti žymėti automobilius, o jų užrašą sudaro „T“ raidė  ir penki skaitmenys.
@@ -44,16 +61,18 @@ https://www.regitra.lt/lt/paslaugos-ir-veikla/numerio-zenklai/numerio-zenklu-tip
 * `00000` - diplomatiniai
 * `0XXXXX` - lentelė vežamiems dviračiams žymėti
 
-## API
+### `owner` field:
 
-* `http://127.0.0.1:8000/docs/#` - API documentation
-* `http://localhost:8000/admin/` - Admin view
-* `http://127.0.0.1:8000/api` - retrieve all entries (Read)
-* `http://127.0.0.1:8000/api?&owner=John+Doe` - retrieve all entries filtered by owner (Read)
-* `http://127.0.0.1:8000/api?plate=AB123` - retrieve all entries filtered by plate (Read)
-* `http://127.0.0.1:8000/api?search=123` -  retrieve all entries where search phrase is mentioned (Read)
-* `http://127.0.0.1:8000/api/1/` - retrieve entry by it's ID (Read, Update, Delete)
-* `http://127.0.0.1:8000/api/plate/ABC123/` - retrieve entry by plate (Read, Update, Delete)
+Should be at least two alpha-numeric words
+
+### `car_model` field:
+
+Should be at least two alpha-numeric words
+
+### `image` field:
+
+This field is read-only and cannot be altered. Celery task will automatically retrieve image as per provided car name
+and will populate this field with image.
 
 ## Services
 
