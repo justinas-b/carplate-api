@@ -75,4 +75,4 @@ class Registration(models.Model):
 
 
 class RegistrationAdmin(admin.ModelAdmin):
-    readonly_fields = ('image',)
+    readonly_fields = ('image', 'retrieve_image')
