@@ -21,7 +21,11 @@
                 <td>{{ registration.plate }}</td>
                 <td>{{ registration.car_model }}</td>
                 <td>{{ registration.owner }}</td>
-                <td><a href="{{ registration.image.url }}">{{ registration.image }}</a></td>
+                <td>
+                    {% if registration.image %}
+                    <a href="{{ registration.image.url }}">{{ registration.image }}</a>
+                    {% endif %}
+                </td>
                 <td>
                     <a href="{% url 'app-details' registration.id %}">Edit</a>
                     <a href="{% url 'app-delete' registration.id %}">Delete</a>
