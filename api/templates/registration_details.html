@@ -1,0 +1,30 @@
+{% load rest_framework %}
+
+<html>
+    <head>
+        <title>edit</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    </head>
+    <body>
+        <h1>Registration details</h1>
+        {% if error %}
+        <p style="color: red;">
+            Form validation failed
+        </p>
+        {% endif %}
+        <form method="post" >
+            {% csrf_token %}
+            <p>
+                <table border="0">
+                    {{form}}
+                </table>
+                <img src="{{ form.instance.image.url }}" alt="{{form.instance.car_model}}" width="270" height="270">
+            </p>
+            <p>
+                <button type="submit" class="btn btn-default">Save</button>
+                <input type="submit" name="cancel" value="Cancel" class="btn btn-default"/>
+                <!--<a href="{{ view.get_success_url }}" class="btn btn-default">Cancel</a>-->
+            </p>
+        </form>
+    </body>
+</html>
