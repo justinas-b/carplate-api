@@ -138,7 +138,7 @@ class AppDelete(APIView):
         registration = get_object_or_404(Registration, pk=pk)
         registration.delete()
 
-    def get(self, pk):
+    def get(self, request, pk):
         self.delete_record(pk=pk)
         return redirect(to='app-list')
 
@@ -147,5 +147,7 @@ class AppDelete(APIView):
 def api_root(request):
     """List available API endpoints."""
     return Response({
-        'registrations': reverse('registration-list', request=request),
+        'app': reverse('app-list', request=request),
+        'api': reverse('registration-list', request=request),
+
     })

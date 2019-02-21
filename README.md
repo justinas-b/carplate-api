@@ -25,9 +25,10 @@ User can register/store Lithuanian car number plates, their owner names and car 
 
 ## API
 
+* `http://127.0.0.1:8000/app` - Application
+* `http://127.0.0.1:8000/api` - retrieve all entries (GET), create new entry (POST)
 * `http://127.0.0.1:8000/docs/#` - API documentation
 * `http://localhost:8000/admin/` - Admin view
-* `http://127.0.0.1:8000/api` - retrieve all entries (GET), create new entry (POST)
 * `http://127.0.0.1:8000/api?&owner=John+Doe` - retrieve all entries filtered by owner (GET)
 * `http://127.0.0.1:8000/api?plate=AB123` - retrieve all entries filtered by plate (GET)
 * `http://127.0.0.1:8000/api?search=123` -  retrieve all entries where search phrase is mentioned in plate field (GET)
