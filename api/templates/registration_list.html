@@ -5,16 +5,17 @@
     <body>
         <h1>Registrations list</h1>
         <p>
-            <input type="button" onclick="location.href='{% url 'app-create'%}';" value="Create new entry" />
+            <input type="button" onclick="location.href='{% url 'app-create'%}';" value="Create new entry" class="btn btn-default"/>
         </p>
 
         <table>
             <tr>
-                <th width="20%">Plate</th>
+                <th width="14%">Plate</th>
                 <th width="20%">Model</th>
                 <th width="20%">Owner</th>
                 <th width="30%">Image</th>
-                <th width="10%">Actions</th>
+                <th width="8%"></th>
+                <th width="8%"></th>
             </tr>
             {% for registration in registrations %}
             <tr>
@@ -26,10 +27,8 @@
                     <a href="{{ registration.image.url }}">{{ registration.image }}</a>
                     {% endif %}
                 </td>
-                <td>
-                    <a href="{% url 'app-details' registration.id %}">Edit</a>
-                    <a href="{% url 'app-delete' registration.id %}">Delete</a>
-                </td>
+                <td><a href="{% url 'app-details' registration.id %}" class="btn btn-default">Edit</a></td>
+                <td><a href="{% url 'app-delete' registration.id %}" class="btn btn-default">Delete</a></td>
             </tr>
             {% endfor %}
         </table>

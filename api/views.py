@@ -121,7 +121,10 @@ class AppCreate(APIView):
 
     def post(self, request):
         form = RegistrationForm(request.POST)
-        if form.is_valid():
+
+        if 'cancel' in request.POST:
+            response = redirect('app-list')
+        elif form.is_valid():
             post = form.save(commit=False)
             post.save()
             response = redirect('app-list')
