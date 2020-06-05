@@ -11,7 +11,7 @@ coreapi==2.3.3
 coreschema==0.0.4
 DateTime==4.3
 dill==0.2.9
-Django==2.1.11
+Django==2.2.13
 django-filter==2.1.0
 django-filters==0.2.1
 django-rest-swagger==2.2.0
