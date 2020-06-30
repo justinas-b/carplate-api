@@ -82,3 +82,4 @@ and will populate this field with image.
 * `http://localhost:8000` - Django API
 * `http://localhost:5672` - RabbitMQ interface
 * `http://localhost:15672` - RabbitMQ management interface
+
